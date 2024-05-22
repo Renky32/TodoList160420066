@@ -13,27 +13,17 @@ import com.example.todoapp_160420066.R
 import com.example.todoapp_160420066.databinding.FragmentTodoListBinding
 import com.example.todoapp_160420066.viewmodel.ListTodoViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TodoListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TodoListFragment : Fragment() {
     private lateinit var viewModel: ListTodoViewModel
-    private val todoListAdapter  = TodoListAdapter(arrayListOf())
+    private val todoListAdapter = TodoListAdapter(arrayListOf())
     private lateinit var binding: FragmentTodoListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentTodoListBinding.inflate(inflater,container,false)
-        return  binding.root
+        binding = FragmentTodoListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,41 +37,35 @@ class TodoListFragment : Fragment() {
             val action = TodoListFragmentDirections.actionCreateTodo()
             Navigation.findNavController(it).navigate(action)
         }
-        
 
         observeViewModel()
-
     }
-    fun observeViewModel() {
+
+    private fun observeViewModel() {
         viewModel.todoLD.observe(viewLifecycleOwner, Observer {
             todoListAdapter.updateTodoList(it)
-            if(it.isEmpty()) {
-                binding.recViewTodo?.visibility = View.GONE
-                binding.txtError.setText("Your todo still empty.")
+            if (it.isEmpty()) {
+                binding.recViewTodo.visibility = View.GONE
+                binding.txtError.text = "Your todo list is still empty."
+                binding.txtError.visibility = View.VISIBLE
             } else {
-                binding.recViewTodo?.visibility = View.VISIBLE
+                binding.recViewTodo.visibility = View.VISIBLE
+                binding.txtError.visibility = View.GONE
             }
         })
         viewModel.loadingLD.observe(viewLifecycleOwner, Observer {
-            if(it == false) {
-                binding.progressLoad?.visibility = View.GONE
+            if (it == false) {
+                binding.progressLoad.visibility = View.GONE
             } else {
-                binding.progressLoad?.visibility = View.VISIBLE
+                binding.progressLoad.visibility = View.VISIBLE
             }
         })
         viewModel.todoLoadErrorLD.observe(viewLifecycleOwner, Observer {
-            if(it == false) {
-                binding.txtError?.visibility = View.GONE
+            if (it == false) {
+                binding.txtError.visibility = View.GONE
             } else {
-                binding.txtError?.visibility = View.VISIBLE
+                binding.txtError.visibility = View.VISIBLE
             }
         })
-
-
-
-
     }
-
-
-
 }

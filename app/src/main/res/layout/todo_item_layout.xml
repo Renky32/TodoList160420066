@@ -1,27 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <CheckBox
-        android:id="@+id/checkTask"
-        android:layout_width="354dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="43dp"
-        android:text="CheckBox"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <variable
+            name="todo"
+            type="com.example.todoapp_160420066.model.Todo" />
+       <variable
+            name="listener"
+            type="com.example.todoapp_160420066.view.TodoCheckedChangeListener" />
+        <variable
+            name="editListener"
+            type="com.example.todoapp_160420066.view.TodoEditClick" />
 
-    <ImageView
-        android:id="@+id/imgEdit"
-        android:layout_width="52dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="36dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/outline_mode_24" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <CheckBox
+            android:id="@+id/checkTask"
+            android:layout_width="354dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="43dp"
+            android:text="@{todo.title}"
+            android:onCheckedChanged=
+                "@{(cb, isChecked) -> listener.onCheckedChanged(cb, isChecked, todo)}"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgEdit"
+            android:layout_width="52dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="36dp"
+            android:tag="@{todo.uuid}"
+            android:onClick="@{editListener::onTodoEditClick}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/outline_mode_24" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
